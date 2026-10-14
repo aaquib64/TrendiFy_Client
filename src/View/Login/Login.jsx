@@ -1,108 +1,164 @@
-
 import { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 import { loginUser } from "../Utils/api";
 import "./Login.css";
-import { Link } from "react-router-dom";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
 
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      setError("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-      try {
-        const userData = await loginUser({ email, password });
-        login(userData); // From context
-      } catch (err) {
-        setError(err.message);
-      }
-    };
-  
-    //   try {
-    //     const userData = await loginUser({email,
-    //        password});
-    //     login(userData);
-    //   } catch (err) {
-    //     setError(err);
-    //   }
-    // };
-  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (loading) return;
+
+    setLoading(true);
+
+    try {
+      const userData = await loginUser({ email, password });
+      login(userData);
+    } catch (err) {
+      setError(err?.message || "Unable to log in. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="container mt-5 d-flex justify-content-center">
-    <div className="card p-4 shadow-lg" style={{ maxWidth: "400px", width: "100%" }}>
-      <h3 className="text-center mb-3">Login</h3>
+    <main className="trendify-auth-page">
+      <section className="trendify-auth-shell">
+        {/* Left branding panel */}
+        <div className="trendify-auth-visual">
+          <Link to="/" className="trendify-auth-logo">
+            TRENDIFY<span>.</span>
+          </Link>
 
-      {error && (
-          <div className="alert alert-danger" role="alert">
-            {error}
+          <div className="trendify-auth-visual-content">
+            <span className="trendify-auth-eyebrow">
+              YOUR STYLE. YOUR STORY.
+            </span>
+
+            <h1>
+              Fashion that
+              <br />
+              feels like <span>you.</span>
+            </h1>
+
+            <p>
+              Discover your style, explore new trends, and make every look your
+              own.
+            </p>
+
+            <div className="trendify-auth-decoration" aria-hidden="true">
+              <span className="trendify-auth-circle trendify-circle-one" />
+              <span className="trendify-auth-circle trendify-circle-two" />
+              <span className="trendify-auth-circle trendify-circle-three" />
+              <span className="trendify-auth-decoration-text">STYLE</span>
+            </div>
           </div>
-      )}
 
-
-      <form onSubmit={handleSubmit}>
-        {/* Email Field */}
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">
-            Email Address
-          </label>
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            aria-describedby="emailHelp"
-            placeholder="Enter your email"
-            value={email}
-            onChange={ (e) => setEmail(e.target.value)}
-            required
-          />
-          <div id="emailHelp" className="form-text">
-            We'll never share your email with anyone else.
-          </div>
+          <p className="trendify-auth-visual-footer">
+            YOUR EVERYDAY FASHION DESTINATION
+          </p>
         </div>
 
-        {/* Password Field */}
-        <div className="mb-3">
-          <label htmlFor="password" className="form-label">
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            className="form-control"
-            aria-describedby="passwordHelpBlock"
-            placeholder="Enter your password"
-            value={password}
-            onChange={ (e) => setPassword(e.target.value)}
-            required
-          />
-          <div id="passwordHelpBlock" className="form-text">
-          Your password must be 8-20 characters long and include letters and numbers.
+        {/* Right login form */}
+        <div className="trendify-auth-form-panel">
+          <div className="trendify-auth-form-container">
+            <div className="trendify-auth-mobile-logo">
+              <Link to="/" className="trendify-auth-logo">
+                TRENDIFY<span>.</span>
+              </Link>
+            </div>
+
+            <div className="trendify-auth-heading">
+              <span className="trendify-auth-eyebrow">WELCOME BACK</span>
+
+              <h2>Login to your account</h2>
+
+              <p>Enter your details to continue shopping.</p>
+            </div>
+
+            {error && (
+              <div className="trendify-auth-error" role="alert">
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit}>
+              <div className="trendify-auth-field">
+                <label htmlFor="email">Email address</label>
+
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="trendify-auth-field">
+                <label htmlFor="password">Password</label>
+
+                <div className="trendify-auth-password">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+
+                  <button
+                    type="button"
+                    className="trendify-auth-toggle"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="trendify-auth-submit"
+                disabled={loading}
+              >
+                {loading ? "Logging in..." : "Login"}
+                {!loading && <span aria-hidden="true">→</span>}
+              </button>
+            </form>
+
+            <p className="trendify-auth-switch">
+              Don't have an account? <Link to="/signup">Create an account</Link>
+            </p>
+
+            <p className="trendify-auth-terms">
+              By continuing, you agree to shop responsibly and keep your account
+              details secure.
+            </p>
           </div>
         </div>
-
-        {/* Remember Me Checkbox */}
-        <div className="mb-3 form-check">
-          <input type="checkbox" className="form-check-input" id="rememberMe" />
-          <label className="form-check-label" htmlFor="rememberMe">
-            Remember me
-          </label>
-        </div>
-
-        {/* Login Button */}
-        <button type="submit" className="btn btn-danger w-100">
-          Login
-        </button>
-      </form>
-      <p className="text-center">Don't have an account? <Link to="/signup">Sign up</Link></p>
-    </div>
-  </div>
-   
-    
+      </section>
+    </main>
   );
 };
+
 export default Login;

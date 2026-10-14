@@ -1,4 +1,39 @@
+.brand-img {
+  height: 260px;
+  object-fit: cover;
+}
 
-.Card-Heading{
-    color: blue;
+.card {
+  border: none;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+@media (max-width: 768px) {
+  .brand-img {
+    height: 220px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .card-text {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .brand-img {
+    height: 200px;
+  }
+
+  .container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
 }

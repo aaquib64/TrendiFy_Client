@@ -42,3 +42,9 @@
 .image:hover {
   transform: scale(1.1);
 }
+
+
+.product-card .card-img-top {
+  background-color: #f8f8f8;
+  transition: transform 0.4s ease;
+}

@@ -1,6 +1,8 @@
 import axios from "axios";
 
+
 const API_BASE_URL = "https://trendify-server-gb90.onrender.com";
+// const API_BASE_URL = "http://localhost:5700";
 
 // Fetch all Products
 export const fetchProducts = async () => {
@@ -17,7 +19,7 @@ export const fetchProducts = async () => {
 export const fetchProductDetails = async (id) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/products/${id}`);
-    return response.data.products;                // dbt
+    return response.data.products; // dbt
   } catch (error) {
     console.error("Error fetching products:", error);
     return null;
@@ -28,7 +30,7 @@ export const fetchProductDetails = async (id) => {
 export const fetchProductsByGender = async (gender, page = 1, limit = 10) => {
   try {
     const response = await axios.get(
-      `${API_BASE_URL}/shop/${gender}?page=${page}&limit=${limit}`
+      `${API_BASE_URL}/shop/${gender}?page=${page}&limit=${limit}`,
     );
     return response.data; // includes products, totalPages, etc.
   } catch (error) {
@@ -48,14 +50,18 @@ export const fetchProductsByGender = async (gender, page = 1, limit = 10) => {
 // };
 
 // User Signup
+// User Signup
 export const signupUser = async (userData) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/signup`, userData,);
-    
+    const response = await axios.post(`${API_BASE_URL}/signup`, userData);
+
     return response.data;
   } catch (error) {
-    console.error("Signup failed:", error);
-    return { error: "Signup failed" };
+    console.error("Signup failed:", error.response?.data || error.message);
+
+    throw new Error(
+      error.response?.data?.message || "Signup failed. Please try again.",
+    );
   }
 };
 
@@ -71,7 +77,7 @@ export const signupUser = async (userData) => {
 //           "Content-Type": "application/json",
 //         },
 //       });
-  
+
 //       return response.data;
 //     } catch (error) {
 //       console.error("Signup failed:", error);
@@ -81,7 +87,6 @@ export const signupUser = async (userData) => {
 
 // User Login
 
-
 export const loginUser = async (credentials) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/login`, credentials);
@@ -89,11 +94,10 @@ export const loginUser = async (credentials) => {
   } catch (error) {
     console.error("Login failed:", error);
     throw new Error(
-      error.response?.data?.message || "Login failed. Please try again."
+      error.response?.data?.message || "Login failed. Please try again.",
     );
   }
 };
-
 
 // export const loginUser = async (credentials) => {
 //   try {
@@ -104,3 +108,57 @@ export const loginUser = async (credentials) => {
 //     return { error: "Login failed" };
 //   }
 // };
+
+
+export const createOrder = async (orderData, token) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/orders`,
+      orderData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Create order failed:",
+      error.response?.data || error.message
+    );
+
+    throw new Error(
+      error.response?.data?.message ||
+        "Unable to place order. Please try again."
+    );
+  }
+};
+
+
+
+export const fetchMyOrders = async (token) => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/orders/my-orders`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data.orders;
+  } catch (error) {
+    console.error(
+      "Fetch my orders failed:",
+      error.response?.data || error.message
+    );
+
+    throw new Error(
+      error.response?.data?.message ||
+        "Unable to fetch your orders."
+    );
+  }
+};

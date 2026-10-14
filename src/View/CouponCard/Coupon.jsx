@@ -1,4 +1,3 @@
-
 import React from "react";
 import "./Coupon.css";
 import Capture from "../../Images/Capture.PNG";

@@ -1,0 +1,195 @@
+import React, { useState, useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../Context/AuthContext";
+import { CartContext } from "../Context/CartContext";
+import { WishlistContext } from "../Context/WishlistContext";
+import "./Navbar.css";
+import Logo from "./Logo/Logo";
+import Men from "./Men/Men";
+import Women from "./Women/Women";
+import Kids from "./Kids/Kids";
+import HomeAndLiving from "./HomeAndLiving/HomeAndLiving";
+import Beauty from "./Beauty/Beauty";
+import {
+  FaShoppingCart,
+  FaUser,
+  FaBoxOpen,
+  FaSignOutAlt,
+  FaHeart,
+  FaSearch,
+} from "react-icons/fa";
+
+const Navbar = () => {
+  const { user, logout } = useContext(AuthContext);
+  const { cartCount } = useContext(CartContext);
+  const { wishlistCount } = useContext(WishlistContext);
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+
+  // Live search: go to the results page 400ms after the user stops typing.
+  // The /shop/:value page should do the fetching itself.
+  useEffect(() => {
+    const q = query.trim();
+    if (q.length < 2) return;
+    const timer = setTimeout(() => {
+      navigate(`/shop/${encodeURIComponent(q)}`);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [query, navigate]);
+
+  // Pressing Enter searches right away (and stops the page from reloading)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const q = query.trim();
+    if (q) navigate(`/shop/${encodeURIComponent(q)}`);
+  };
+
+  return (
+    <div className="sticky-top">
+      <nav className="navbar navbar-expand-lg navbar-dark shadow-sm">
+        <div className="container-fluid">
+          <Logo />
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+
+          <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul className="navbar-nav me-auto mb-0 mx-3 gap-3 nav-menu">
+              <Men />
+              <Women />
+              <Kids />
+              <HomeAndLiving />
+              <Beauty />
+            </ul>
+
+            <div className="d-flex flex-column flex-lg-row align-items-center gap-2 ms-lg-auto nav-right">
+              {/* Search */}
+              <form
+                className="search-form"
+                role="search"
+                onSubmit={handleSubmit}
+              >
+                <div className="input-group premium-search">
+                  <span className="input-group-text border-0">
+                    <FaSearch aria-hidden="true" />
+                  </span>
+                  <input
+                    type="search"
+                    className="form-control border-0"
+                    placeholder="Search products..."
+                    aria-label="Search products"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                  />
+                </div>
+              </form>
+
+              {/* Auth */}
+              <div className="d-flex flex-column flex-lg-row gap-2 auth-buttons">
+                {user ? (
+                  <div className="dropdown">
+                    <button
+                      className="btn premium-btn dropdown-toggle d-flex align-items-center gap-2"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <FaUser size={17} />
+                      {user?.name?.split(" ")[0]}
+                    </button>
+
+                    <ul className="dropdown-menu dropdown-menu-end shadow-sm">
+                      <li>
+                        <Link
+                          to="/profile"
+                          className="dropdown-item d-flex align-items-center gap-2"
+                        >
+                          <FaUser />
+                          My Profile
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/orders"
+                          className="dropdown-item d-flex align-items-center gap-2"
+                        >
+                          <FaBoxOpen />
+                          My Orders
+                        </Link>
+                      </li>
+                      <li>
+                        <hr className="dropdown-divider" />
+                      </li>
+                      <li>
+                        <button
+                          type="button"
+                          className="dropdown-item d-flex align-items-center gap-2"
+                          onClick={logout}
+                        >
+                          <FaSignOutAlt />
+                          Logout
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                ) : (
+                  <>
+                    <Link to="/login" className="btn premium-btn">
+                      Login
+                    </Link>
+                    <Link
+                      to="/signup"
+                      className="btn premium-btn premium-btn--primary"
+                    >
+                      Signup
+                    </Link>
+                  </>
+                )}
+              </div>
+
+              {/* Wishlist */}
+              <Link
+                to="/wishlist"
+                className="btn premium-btn position-relative"
+                title="Wishlist"
+                aria-label="Wishlist"
+              >
+                <FaHeart />
+                {wishlistCount > 0 && (
+                  <span className="nav-badge badge rounded-pill position-absolute top-0 start-100 translate-middle">
+                    {wishlistCount}
+                  </span>
+                )}
+              </Link>
+
+              {/* Cart */}
+              <Link
+                to="/cart"
+                className="btn premium-btn position-relative"
+                title="Cart"
+                aria-label="Cart"
+              >
+                <FaShoppingCart />
+                {cartCount > 0 && (
+                  <span className="nav-badge badge rounded-pill position-absolute top-0 start-100 translate-middle">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  );
+};
+
+export default Navbar;

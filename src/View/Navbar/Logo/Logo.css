@@ -1,3 +1,4 @@
+/*
 .Navbar-Container{
     background-color:rgb(247, 247, 247);
     margin: 0px;
@@ -20,4 +21,35 @@
 .Nav-icon{
     margin-right: 40px;
     padding-top: 15px; 
+}
+    */
+
+
+.sticky-top nav.navbar {
+  min-height: 0 !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+/* Reduce logo size slightly */
+.sticky-top .navbar-brand img {
+  width: 65px;
+  height: auto;
+}
+
+/* Keep search box compact */
+.sticky-top .premium-search .form-control {
+  height: 38px;
+}
+
+/* Reduce button height */
+.sticky-top .premium-btn {
+  padding: 6px 12px;
+}
+
+/* Keep navbar container vertically compact */
+.sticky-top nav.navbar > .container-fluid {
+  align-items: center;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }

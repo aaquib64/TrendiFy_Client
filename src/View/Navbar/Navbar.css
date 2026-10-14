@@ -1,65 +1,170 @@
-.Navbar-Container{
-    background-color:rgb(247, 247, 247);
-    margin: 0px;
-    padding: 0px;  
+Navbar overall height
+.navbar {
+  background: linear-gradient(135deg, #2c2c2c, #d85c5c);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);   
+  min-height: 55px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+.custom-navbar {
+  background: linear-gradient(135deg, #2c2c2c, #d85c5c) !important;
 }
 
-.Navbar-Container{
-    height: 70px;
-    width:100vw;
-   
+/* Remove container spacing */
+.container-fluid {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
-.Nav-icon{
-    margin-right: 40px;
-    padding-top: 15px; 
-}
-.Nav-Tags{
-    font-size: 12px; 
-    font-weight: 500;
-    list-style-type: none;
-    display: flex;
-    color: black;
-    padding-top: 15px;   
-}
-.Nav-Tag-1{
-    margin-right: 30px; 
-    margin-left: 20px;
-    margin-top: 8px;
-   
-}
-.Nav-Tag-All{
-    margin-right: 30px;
-    margin-top: 8px;
-    
-}
-.Anchor-tag{
-    color: black;
-    text-decoration: none;
-    
-}
-.Navbar-Searchbar{
-    background-color: rgb(247, 247, 247);
-    display:flex;  
-}
-.Navbar-Searchbar-tag{
-    margin-left: 150px;
 
+/* Logo spacing */
+.navbar-brand {
+  margin: 0 !important;
+  padding: 0 !important;
 }
-.Navbar-Searchbar-input{
-    background-color: rgb(234, 233, 233); 
-    width: 450px;
-    height: 33px;
-    border-radius: 5px;
-    border: none;
-    padding: 20px;
 
+/* Logo size */
+.navbar-brand img {
+  width: 80px;
+  height: auto;
+  display: block;
+  background-color: transparent;
 }
-.Navbar-Searchbar-icon{
-    border: 1px;
-    margin-left: 10px;
-    
+
+/* Remove UL margins */
+.navbar-nav {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  align-items: center;
 }
-.Nav-Tag-Right{
-    margin-left: 50px;
-    margin-top: 8px;
+
+/* Nav links height */
+.nav-menu .nav-link,
+.nav-menu .dropdown-toggle {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  line-height: 1.1;
+  color: #fff !important;
 }
+
+/* Search form spacing */
+form[role="search"] {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+
+/* Premium Search */
+/* Premium Search */
+.premium-search {
+  width: 420px;
+  max-width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  box-sizing: border-box;
+}
+
+.premium-search .input-group-text {
+  background: transparent;
+  color: white;
+  padding-left: 14px;
+}
+
+.premium-search .form-control {
+  background: transparent;
+  color: white;
+  height: 44px;
+  box-shadow: none !important;
+  min-width: 0;
+}
+
+.premium-search .form-control::placeholder {
+  color: rgba(255,255,255,0.75);
+}
+
+
+/* Search form */
+.search-form {
+  min-width: 0;
+}
+
+
+/* Mobile */
+@media (max-width: 991.98px) {
+
+  .search-form {
+    width: 100%;
+    padding: 10px 16px;
+    box-sizing: border-box;
+  }
+
+  .premium-search {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .auth-buttons {
+    width: 100%;
+    align-items: center;
+  }
+
+  .auth-buttons .premium-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+}
+
+
+/* Buttons */
+.premium-btn {
+  background: rgba(255,255,255,0.12) !important;
+  color: white !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  border-radius: 10px;
+  padding: 8px 18px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+/* Hover */
+.premium-btn:hover {
+  background: white !important;
+  color: #d85c5c !important;
+}
+
+/* User */
+.user-profile {
+  color: white !important;
+}
+
+
+/* Profile Dropdown */
+.auth-buttons .dropdown-menu {
+  min-width: 190px;
+  padding: 8px;
+  border: none;
+  border-radius: 12px;
+}
+
+.auth-buttons .dropdown-item {
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.auth-buttons .dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+
+.auth-buttons .dropdown-divider {
+  margin: 6px 0;
+}
+
+.auth-buttons .dropdown-item button {
+  border: none;
+  background: transparent;
+}
+

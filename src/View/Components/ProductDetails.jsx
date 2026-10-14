@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { CartContext } from "../Context/CartContext";
+import { WishlistContext } from "../Context/WishlistContext";
+import { FaHeart } from "react-icons/fa";
 
 const RestaurantDetails = () => {
   const { id } = useParams();
@@ -8,6 +11,10 @@ const RestaurantDetails = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedColor, setSelectedColor] = useState("");
+  const [selectedSize, setSelectedSize] = useState("");
+  const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useContext(CartContext);
+  const { toggleWishlist, isWishlisted } = useContext(WishlistContext);
   const [error, setError] = useState(null);
   const [newReview, setNewReview] = useState({
     username: "",
@@ -40,21 +47,54 @@ const RestaurantDetails = () => {
     }
   };
 
-  if (loading) return (
-    <div
-      className="d-flex justify-content-center align-items-center"
-      style={{ height: '100vh' }}
-    >
+  const handleAddToCart = () => {
+    if (!selectedColor) {
+      alert("Please select a color.");
+      return;
+    }
+
+    if (!selectedSize) {
+      alert("Please select a size.");
+      return;
+    }
+
+    addToCart(product, quantity, selectedColor, selectedSize);
+
+    alert("Product added to cart!");
+  };
+
+  const handleBuyNow = () => {
+    if (!selectedColor) {
+      // alert("Please select a color.");
+      return;
+    }
+
+    if (!selectedSize) {
+      alert("Please select a size.");
+      return;
+    }
+
+    addToCart(product, quantity, selectedColor, selectedSize);
+
+    navigate("/checkout");
+  };
+
+  if (loading)
+    return (
       <div
-        className="spinner-border text-danger"
-        style={{ width: '3rem', height: '3rem' }}
-        role="status"
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "100vh" }}
       >
-        <span className="visually-hidden">Loading...</span>
+        <div
+          className="spinner-border text-danger"
+          style={{ width: "3rem", height: "3rem" }}
+          role="status"
+        >
+          <span className="visually-hidden">Loading...</span>
+        </div>
       </div>
-    </div>
-  );
-  
+    );
+
   if (error) return <p>Error: {error}</p>;
 
   const averageRating = product.reviews?.length
@@ -65,7 +105,7 @@ const RestaurantDetails = () => {
     : "No Ratings Yet";
 
   return (
-    <div >
+    <div>
       {/* Go Back Button */}
       <div className="container my-3">
         <button onClick={() => navigate(-1)} className="btn btn-danger">
@@ -89,7 +129,7 @@ const RestaurantDetails = () => {
           <div className="col-lg-4 col-md-12">
             <h2 className="fw-bold">{product.brand}</h2>
             <h4 className="text-muted">
-               <strong>{product.name}</strong>
+              <strong>{product.name}</strong>
             </h4>
             <p className="average-rating">⭐ {averageRating} / 5</p>
             <p className="lead">
@@ -106,6 +146,7 @@ const RestaurantDetails = () => {
                 className="form-select w-50"
                 value={selectedColor}
                 onChange={(e) => setSelectedColor(e.target.value)}
+                required
               >
                 <option disabled value="">
                   Choose a color
@@ -117,7 +158,7 @@ const RestaurantDetails = () => {
                 ))}
               </select>
             </div>
-            
+
             <strong className="text-muted">Product Details:</strong>
             <p className=" "> {product.description}</p>
 
@@ -126,11 +167,20 @@ const RestaurantDetails = () => {
               <label htmlFor="size" className="form-label">
                 Size:
               </label>
-              <select className="form-select w-50" id="size" defaultValue="">
-                <option disabled>Choose size</option>
-                <option value="1">Small</option>
-                <option value="2">Medium</option>
-                <option value="3">Large</option>
+
+              <select
+                className="form-select w-50"
+                id="size"
+                value={selectedSize}
+                onChange={(e) => setSelectedSize(e.target.value)}
+                 required
+              >
+                <option value="" disabled>
+                  Choose size
+                </option>
+                <option value="Small">Small</option>
+                <option value="Medium">Medium</option>
+                <option value="Large">Large</option>
               </select>
             </div>
 
@@ -139,18 +189,39 @@ const RestaurantDetails = () => {
               <label htmlFor="quantity" className="form-label">
                 Quantity:
               </label>
+
               <input
                 type="number"
                 className="form-control w-50"
                 id="quantity"
-                defaultValue="1"
+                value={quantity}
                 min="1"
+                onChange={(e) =>
+                  setQuantity(Math.max(1, Number(e.target.value)))
+                }
               />
             </div>
 
             {/* Action Buttons */}
-            <button className="btn btn-danger me-2">BUY NOW</button>
-            {/* <button className="btn btn-outline-secondary">Wishlist</button> */}
+            <button className="btn btn-danger me-2" onClick={handleAddToCart}>
+              ADD TO CART
+            </button>
+
+            <button className="btn btn-dark me-2" onClick={handleBuyNow}>
+              BUY NOW
+            </button>
+
+            <button
+              type="button"
+              className={`btn ${
+                isWishlisted(product.id) ? "btn-danger" : "btn-outline-danger"
+              }`}
+              onClick={() => toggleWishlist(product)}
+            >
+              <FaHeart className="me-1" />
+
+              {isWishlisted(product.id) ? "WISHLISTED" : "ADD TO WISHLIST"}
+            </button>
           </div>
         </div>
         <hr></hr>
