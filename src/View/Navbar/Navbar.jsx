@@ -23,17 +23,15 @@ let Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const { cartCount } = useContext(CartContext);
   const { wishlistCount } = useContext(WishlistContext);
-  const [searchGender, setSearchGender] = useState("");
+  // const [ setSearchGender] = useState("");
   // const [selectedGender, setSelectedGender] = useState("");
-  const [products, setProducts] = useState([]);
+  // const [ setProducts] = useState([]);
   // const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  // const [ setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSearch = async (e) => {
     const value = e.target.value.trim();
-    setSearchGender(value);
-    setError(null);
 
     if (value.length >= 2) {
       try {
@@ -42,11 +40,9 @@ let Navbar = () => {
         );
 
         console.log("Live search response:", response.data);
-        setProducts(response.data);
         navigate(`/shop/${encodeURIComponent(value)}`);
       } catch (err) {
         console.error("Search API error:", err);
-        setError("Failed to fetch products.");
       }
     }
   };
