@@ -8,7 +8,7 @@ import { FaHeart } from "react-icons/fa";
 
 const SearchResult = () => {
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
+  // const queryParams = new URLSearchParams(location.search);
   const { gender, category } = useParams(); // Get gender and category from URL params
   const { toggleWishlist, isWishlisted } = useContext(WishlistContext);
   console.log(" gender, category -->>>", gender, category);

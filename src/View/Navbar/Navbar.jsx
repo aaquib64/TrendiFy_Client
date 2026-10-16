@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 import { CartContext } from "../Context/CartContext";
@@ -23,11 +23,11 @@ let Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const { cartCount } = useContext(CartContext);
   const { wishlistCount } = useContext(WishlistContext);
-  const [searchGender, setSearchGender] = useState("");
-  const [selectedGender, setSelectedGender] = useState("");
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  // const [searchGender, setSearchGender] = useState("");
+  // const [selectedGender, setSelectedGender] = useState("");
+  // const [products, setProducts] = useState([]);
+  // const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSearch = async (e) => {

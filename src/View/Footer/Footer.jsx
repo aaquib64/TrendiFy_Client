@@ -149,16 +149,16 @@ function Footer() {
         <div className="footer-section">
           <h5>FOLLOW US</h5>
           <div className="social-icons">
-            <a href="#">
+            <a href="https://www.facebook.com/">
               <FaFacebook />
             </a>
-            <a href="#">
+            <a href="https://www.instagram.com/">
               <FaInstagram />
             </a>
-            <a href="#">
+            <a href="https://x.com/?utm_source=chatgpt.com">
               <FaTwitter />
             </a>
-            <a href="#">
+            <a href="https://www.linkedin.com/in/shaikh-aaquib/">
               <FaLinkedin />
             </a>
           </div>
