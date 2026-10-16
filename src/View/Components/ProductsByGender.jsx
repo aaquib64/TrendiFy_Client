@@ -20,7 +20,7 @@ const ProductByGender = () => {
   useEffect(() => {
     axios
 
-      .get(`http://localhost:5700/shop/${gender}`)
+      .get(`https://trendify-server-gb90.onrender.com/shop/${gender}`)
       .then((response) => {
         console.log("API Response:", response.data); // Debugging
         if (response.data.products && Array.isArray(response.data.products)) {

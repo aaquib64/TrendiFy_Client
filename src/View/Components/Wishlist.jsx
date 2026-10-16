@@ -1,4 +1,3 @@
-
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { WishlistContext } from "../Context/WishlistContext";
@@ -6,10 +5,7 @@ import { CartContext } from "../Context/CartContext";
 import { FaHeart, FaTrash, FaShoppingCart } from "react-icons/fa";
 
 const Wishlist = () => {
-  const {
-    wishlistItems,
-    removeFromWishlist,
-  } = useContext(WishlistContext);
+  const { wishlistItems, removeFromWishlist } = useContext(WishlistContext);
 
   const { addToCart } = useContext(CartContext);
 
@@ -29,8 +25,8 @@ const Wishlist = () => {
         </h2>
 
         <p className="text-muted mb-0">
-          {wishlistItems.length}{" "}
-          {wishlistItems.length === 1 ? "item" : "items"} saved
+          {wishlistItems.length} {wishlistItems.length === 1 ? "item" : "items"}{" "}
+          saved
         </p>
       </div>
 
@@ -39,30 +35,21 @@ const Wishlist = () => {
         <div className="text-center py-5 border rounded shadow-sm">
           <FaHeart size={50} className="text-secondary mb-3" />
 
-          <h4 className="fw-bold">
-            Your wishlist is empty
-          </h4>
+          <h4 className="fw-bold">Your wishlist is empty</h4>
 
           <p className="text-muted">
             Save your favorite products here and find them easily later.
           </p>
 
-          <Link
-            to="/products"
-            className="btn premium-btn px-4 mt-2"
-          >
+          <Link to="/products" className="btn premium-btn px-4 mt-2">
             Continue Shopping
           </Link>
         </div>
       ) : (
         <div className="row g-4">
           {wishlistItems.map((product) => (
-            <div
-              className="col-6 col-md-4 col-lg-3"
-              key={product.id}
-            >
+            <div className="col-6 col-md-4 col-lg-3" key={product.id}>
               <div className="card h-100 border-0 shadow-sm">
-
                 {/* Product Image */}
                 <div className="position-relative">
                   <Link to={`/products/${product.id}`}>
@@ -90,13 +77,9 @@ const Wishlist = () => {
 
                 {/* Product Details */}
                 <div className="card-body">
-                  <h6 className="fw-bold mb-1">
-                    {product.brand}
-                  </h6>
+                  <h6 className="fw-bold mb-1">{product.brand}</h6>
 
-                  <p className="text-muted small mb-2">
-                    {product.name}
-                  </p>
+                  <p className="text-muted small mb-2">{product.name}</p>
 
                   <div className="fw-bold mb-3">
                     ₹{Number(product.price).toFixed(2)}
@@ -111,7 +94,6 @@ const Wishlist = () => {
                     Add to Cart
                   </button>
                 </div>
-
               </div>
             </div>
           ))}
@@ -122,4 +104,3 @@ const Wishlist = () => {
 };
 
 export default Wishlist;
-
