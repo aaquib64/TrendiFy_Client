@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 import { CartContext } from "../Context/CartContext";
@@ -23,31 +23,52 @@ let Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const { cartCount } = useContext(CartContext);
   const { wishlistCount } = useContext(WishlistContext);
-  // const [searchGender, setSearchGender] = useState("");
+  const [searchGender, setSearchGender] = useState("");
   // const [selectedGender, setSelectedGender] = useState("");
-  // const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]);
   // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState(null);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSearch = async (e) => {
     const value = e.target.value.trim();
     setSearchGender(value);
+    setError(null);
 
     if (value.length >= 2) {
-      // You can reduce this to 1 if needed
       try {
         const response = await axios.get(
-          `https://trendify-server-gb90.onrender.com/shop/${value}`,
+          `https://trendify-server-gb90.onrender.com/shop/${encodeURIComponent(value)}`,
         );
+
         console.log("Live search response:", response.data);
         setProducts(response.data);
-        navigate(`/shop/${value}`);
+        navigate(`/shop/${encodeURIComponent(value)}`);
       } catch (err) {
+        console.error("Search API error:", err);
         setError("Failed to fetch products.");
       }
     }
   };
+
+  // const handleSearch = async (e) => {
+  //   const value = e.target.value.trim();
+  //   setSearchGender(value);
+
+  //   if (value.length >= 2) {
+  //     // You can reduce this to 1 if needed
+  //     try {
+  //       const response = await axios.get(
+  //         `https://trendify-server-gb90.onrender.com/shop/${value}`,
+  //       );
+  //       console.log("Live search response:", response.data);
+  //       setProducts(response.data);
+  //       navigate(`/shop/${value}`);
+  //     } catch (err) {
+  //       setError("Failed to fetch products.");
+  //     }
+  //   }
+  // };
 
   // const handleSearch = async (e) => {
   //   e.preventDefault();
